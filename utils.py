@@ -20,7 +20,7 @@ FLAGS = tf.app.flags.FLAGS
 def read_data(path):
   """
   Read h5 format data file
-  
+
   Args:
     path: file path of desired file
     data: '.h5' file format that contains train data values
@@ -33,7 +33,7 @@ def read_data(path):
 
 def preprocess(path, scale=3):
   """
-  Preprocess single image file 
+  Preprocess single image file
     (1) Read original image as YCbCr format (and grayscale as default)
     (2) Normalize
     (3) Apply image file with bicubic interpolation
@@ -59,7 +59,7 @@ def prepare_data(sess, dataset):
   """
   Args:
     dataset: choose train dataset or test dataset
-    
+
     For train dataset, output data would be ['.../t1.bmp', '.../t2.bmp', ..., '.../t99.bmp']
   """
   if FLAGS.is_train:
@@ -99,7 +99,7 @@ def imread(path, is_grayscale=True):
 def modcrop(image, scale=3):
   """
   To scale down and up the original image, first thing to do is to have no remainder while scaling operation.
-  
+
   We need to find modulo of height (and width) and scale factor.
   Then, subtract the modulo from height (and width) of original image size.
   There would be no remainder even after scaling operation.
@@ -145,7 +145,7 @@ def input_setup(sess, config):
           sub_label = label_[x+padding:x+padding+config.label_size, y+padding:y+padding+config.label_size] # [21 x 21]
 
           # Make channel value
-          sub_input = sub_input.reshape([config.image_size, config.image_size, 1])  
+          sub_input = sub_input.reshape([config.image_size, config.image_size, 1])
           sub_label = sub_label.reshape([config.label_size, config.label_size, 1])
 
           sub_input_sequence.append(sub_input)
@@ -160,15 +160,15 @@ def input_setup(sess, config):
       h, w = input_.shape
 
     # Numbers of sub-images in height and width of image are needed to compute merge operation.
-    nx = ny = 0 
+    nx = ny = 0
     for x in range(0, h-config.image_size+1, config.stride):
       nx += 1; ny = 0
       for y in range(0, w-config.image_size+1, config.stride):
         ny += 1
         sub_input = input_[x:x+config.image_size, y:y+config.image_size] # [33 x 33]
         sub_label = label_[x+padding:x+padding+config.label_size, y+padding:y+padding+config.label_size] # [21 x 21]
-        
-        sub_input = sub_input.reshape([config.image_size, config.image_size, 1])  
+
+        sub_input = sub_input.reshape([config.image_size, config.image_size, 1])
         sub_label = sub_label.reshape([config.label_size, config.label_size, 1])
 
         sub_input_sequence.append(sub_input)
@@ -186,7 +186,7 @@ def input_setup(sess, config):
 
   if not config.is_train:
     return nx, ny
-    
+
 def imsave(image, path):
   return scipy.misc.imsave(path, image)
 

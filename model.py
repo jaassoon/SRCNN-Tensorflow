@@ -1,6 +1,6 @@
 from utils import (
-  read_data, 
-  input_setup, 
+  read_data,
+  input_setup,
   imsave,
   merge
 )
@@ -14,13 +14,13 @@ import tensorflow as tf
 
 class SRCNN(object):
 
-  def __init__(self, 
-               sess, 
+  def __init__(self,
+               sess,
                image_size=33,
-               label_size=21, 
+               label_size=21,
                batch_size=128,
-               c_dim=1, 
-               checkpoint_dir=None, 
+               c_dim=1,
+               checkpoint_dir=None,
                sample_dir=None):
 
     self.sess = sess
@@ -38,7 +38,7 @@ class SRCNN(object):
   def build_model(self):
     self.images = tf.placeholder(tf.float32, [None, self.image_size, self.image_size, self.c_dim], name='images')
     self.labels = tf.placeholder(tf.float32, [None, self.label_size, self.label_size, self.c_dim], name='labels')
-    
+
     self.weights = {
       'w1': tf.Variable(tf.random_normal([9, 9, 1, 64], stddev=1e-3), name='w1'),
       'w2': tf.Variable(tf.random_normal([1, 1, 64, 32], stddev=1e-3), name='w2'),
@@ -63,7 +63,7 @@ class SRCNN(object):
     else:
       nx, ny = input_setup(self.sess, config)
 
-    if config.is_train:     
+    if config.is_train:
       data_dir = os.path.join('./{}'.format(config.checkpoint_dir), "train.h5")
     else:
       data_dir = os.path.join('./{}'.format(config.checkpoint_dir), "test.h5")
@@ -74,7 +74,7 @@ class SRCNN(object):
     self.train_op = tf.train.GradientDescentOptimizer(config.learning_rate).minimize(self.loss)
 
     tf.initialize_all_variables().run()
-    
+
     counter = 0
     start_time = time.time()
 

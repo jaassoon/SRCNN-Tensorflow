@@ -32,15 +32,15 @@ def main(_):
     os.makedirs(FLAGS.sample_dir)
 
   with tf.Session() as sess:
-    srcnn = SRCNN(sess, 
-                  image_size=FLAGS.image_size, 
-                  label_size=FLAGS.label_size, 
+    srcnn = SRCNN(sess,
+                  image_size=FLAGS.image_size,
+                  label_size=FLAGS.label_size,
                   batch_size=FLAGS.batch_size,
-                  c_dim=FLAGS.c_dim, 
+                  c_dim=FLAGS.c_dim,
                   checkpoint_dir=FLAGS.checkpoint_dir,
                   sample_dir=FLAGS.sample_dir)
 
     srcnn.train(FLAGS)
-    
+
 if __name__ == '__main__':
   tf.app.run()
